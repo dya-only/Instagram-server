@@ -8,6 +8,8 @@ import (
 	"go-template/utils"
 	"time"
 
+	"slices"
+
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/config"
 	"github.com/aws/aws-sdk-go-v2/service/s3"
@@ -223,6 +225,27 @@ func RemoveLike(c *fiber.Ctx) error {
 	return c.JSON(fiber.Map{
 		"success": true,
 		"body":    post,
+	})
+}
+
+func GetContain(c *fiber.Ctx) error {
+	id, _ := c.ParamsInt("id")
+	postid, _ := c.ParamsInt("postid")
+
+	user, _ := utils.DbConn.User.Get(ctx, id)
+	var likes []int
+
+	err := json.Unmarshal([]byte(user.Likes), &likes)
+	if err != nil {
+		return c.JSON(fiber.Map{
+			"success": false,
+			"error":   err,
+		})
+	}
+
+	return c.JSON(fiber.Map{
+		"success": true,
+		"body":    slices.Contains(likes, postid),
 	})
 }
 

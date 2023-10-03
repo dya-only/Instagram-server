@@ -41,6 +41,8 @@ type CommentMutation struct {
 	addauthor     *int
 	postid        *int
 	addpostid     *int
+	username      *string
+	avatar        *string
 	content       *string
 	likes         *int
 	addlikes      *int
@@ -260,6 +262,78 @@ func (m *CommentMutation) ResetPostid() {
 	m.addpostid = nil
 }
 
+// SetUsername sets the "username" field.
+func (m *CommentMutation) SetUsername(s string) {
+	m.username = &s
+}
+
+// Username returns the value of the "username" field in the mutation.
+func (m *CommentMutation) Username() (r string, exists bool) {
+	v := m.username
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldUsername returns the old "username" field's value of the Comment entity.
+// If the Comment object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *CommentMutation) OldUsername(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldUsername is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldUsername requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldUsername: %w", err)
+	}
+	return oldValue.Username, nil
+}
+
+// ResetUsername resets all changes to the "username" field.
+func (m *CommentMutation) ResetUsername() {
+	m.username = nil
+}
+
+// SetAvatar sets the "avatar" field.
+func (m *CommentMutation) SetAvatar(s string) {
+	m.avatar = &s
+}
+
+// Avatar returns the value of the "avatar" field in the mutation.
+func (m *CommentMutation) Avatar() (r string, exists bool) {
+	v := m.avatar
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldAvatar returns the old "avatar" field's value of the Comment entity.
+// If the Comment object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *CommentMutation) OldAvatar(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldAvatar is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldAvatar requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldAvatar: %w", err)
+	}
+	return oldValue.Avatar, nil
+}
+
+// ResetAvatar resets all changes to the "avatar" field.
+func (m *CommentMutation) ResetAvatar() {
+	m.avatar = nil
+}
+
 // SetContent sets the "content" field.
 func (m *CommentMutation) SetContent(s string) {
 	m.content = &s
@@ -386,12 +460,18 @@ func (m *CommentMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *CommentMutation) Fields() []string {
-	fields := make([]string, 0, 4)
+	fields := make([]string, 0, 6)
 	if m.author != nil {
 		fields = append(fields, comment.FieldAuthor)
 	}
 	if m.postid != nil {
 		fields = append(fields, comment.FieldPostid)
+	}
+	if m.username != nil {
+		fields = append(fields, comment.FieldUsername)
+	}
+	if m.avatar != nil {
+		fields = append(fields, comment.FieldAvatar)
 	}
 	if m.content != nil {
 		fields = append(fields, comment.FieldContent)
@@ -411,6 +491,10 @@ func (m *CommentMutation) Field(name string) (ent.Value, bool) {
 		return m.Author()
 	case comment.FieldPostid:
 		return m.Postid()
+	case comment.FieldUsername:
+		return m.Username()
+	case comment.FieldAvatar:
+		return m.Avatar()
 	case comment.FieldContent:
 		return m.Content()
 	case comment.FieldLikes:
@@ -428,6 +512,10 @@ func (m *CommentMutation) OldField(ctx context.Context, name string) (ent.Value,
 		return m.OldAuthor(ctx)
 	case comment.FieldPostid:
 		return m.OldPostid(ctx)
+	case comment.FieldUsername:
+		return m.OldUsername(ctx)
+	case comment.FieldAvatar:
+		return m.OldAvatar(ctx)
 	case comment.FieldContent:
 		return m.OldContent(ctx)
 	case comment.FieldLikes:
@@ -454,6 +542,20 @@ func (m *CommentMutation) SetField(name string, value ent.Value) error {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetPostid(v)
+		return nil
+	case comment.FieldUsername:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetUsername(v)
+		return nil
+	case comment.FieldAvatar:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetAvatar(v)
 		return nil
 	case comment.FieldContent:
 		v, ok := value.(string)
@@ -562,6 +664,12 @@ func (m *CommentMutation) ResetField(name string) error {
 		return nil
 	case comment.FieldPostid:
 		m.ResetPostid()
+		return nil
+	case comment.FieldUsername:
+		m.ResetUsername()
+		return nil
+	case comment.FieldAvatar:
+		m.ResetAvatar()
 		return nil
 	case comment.FieldContent:
 		m.ResetContent()

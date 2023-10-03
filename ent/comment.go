@@ -20,6 +20,10 @@ type Comment struct {
 	Author int `json:"author,omitempty"`
 	// Postid holds the value of the "postid" field.
 	Postid int `json:"postid,omitempty"`
+	// Username holds the value of the "username" field.
+	Username string `json:"username,omitempty"`
+	// Avatar holds the value of the "avatar" field.
+	Avatar string `json:"avatar,omitempty"`
 	// Content holds the value of the "content" field.
 	Content string `json:"content,omitempty"`
 	// Likes holds the value of the "likes" field.
@@ -34,7 +38,7 @@ func (*Comment) scanValues(columns []string) ([]any, error) {
 		switch columns[i] {
 		case comment.FieldID, comment.FieldAuthor, comment.FieldPostid, comment.FieldLikes:
 			values[i] = new(sql.NullInt64)
-		case comment.FieldContent:
+		case comment.FieldUsername, comment.FieldAvatar, comment.FieldContent:
 			values[i] = new(sql.NullString)
 		default:
 			values[i] = new(sql.UnknownType)
@@ -68,6 +72,18 @@ func (c *Comment) assignValues(columns []string, values []any) error {
 				return fmt.Errorf("unexpected type %T for field postid", values[i])
 			} else if value.Valid {
 				c.Postid = int(value.Int64)
+			}
+		case comment.FieldUsername:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field username", values[i])
+			} else if value.Valid {
+				c.Username = value.String
+			}
+		case comment.FieldAvatar:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field avatar", values[i])
+			} else if value.Valid {
+				c.Avatar = value.String
 			}
 		case comment.FieldContent:
 			if value, ok := values[i].(*sql.NullString); !ok {
@@ -122,6 +138,12 @@ func (c *Comment) String() string {
 	builder.WriteString(", ")
 	builder.WriteString("postid=")
 	builder.WriteString(fmt.Sprintf("%v", c.Postid))
+	builder.WriteString(", ")
+	builder.WriteString("username=")
+	builder.WriteString(c.Username)
+	builder.WriteString(", ")
+	builder.WriteString("avatar=")
+	builder.WriteString(c.Avatar)
 	builder.WriteString(", ")
 	builder.WriteString("content=")
 	builder.WriteString(c.Content)

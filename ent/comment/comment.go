@@ -15,6 +15,10 @@ const (
 	FieldAuthor = "author"
 	// FieldPostid holds the string denoting the postid field in the database.
 	FieldPostid = "postid"
+	// FieldUsername holds the string denoting the username field in the database.
+	FieldUsername = "username"
+	// FieldAvatar holds the string denoting the avatar field in the database.
+	FieldAvatar = "avatar"
 	// FieldContent holds the string denoting the content field in the database.
 	FieldContent = "content"
 	// FieldLikes holds the string denoting the likes field in the database.
@@ -28,6 +32,8 @@ var Columns = []string{
 	FieldID,
 	FieldAuthor,
 	FieldPostid,
+	FieldUsername,
+	FieldAvatar,
 	FieldContent,
 	FieldLikes,
 }
@@ -58,6 +64,16 @@ func ByAuthor(opts ...sql.OrderTermOption) OrderOption {
 // ByPostid orders the results by the postid field.
 func ByPostid(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldPostid, opts...).ToFunc()
+}
+
+// ByUsername orders the results by the username field.
+func ByUsername(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldUsername, opts...).ToFunc()
+}
+
+// ByAvatar orders the results by the avatar field.
+func ByAvatar(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldAvatar, opts...).ToFunc()
 }
 
 // ByContent orders the results by the content field.

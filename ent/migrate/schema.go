@@ -13,6 +13,8 @@ var (
 		{Name: "id", Type: field.TypeInt, Increment: true},
 		{Name: "author", Type: field.TypeInt},
 		{Name: "postid", Type: field.TypeInt},
+		{Name: "username", Type: field.TypeString},
+		{Name: "avatar", Type: field.TypeString},
 		{Name: "content", Type: field.TypeString},
 		{Name: "likes", Type: field.TypeInt},
 	}

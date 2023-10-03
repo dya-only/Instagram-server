@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"bytes"
+	"go-template/ent/comment"
 	"go-template/ent/user"
 	_user "go-template/ent/user"
 	"go-template/models"
@@ -167,9 +168,9 @@ func UpdateAvatar(c *fiber.Ctx) error {
 	_, _ = fileReader.Read(fileBytes)
 
 	s3File := &s3.PutObjectInput{
-		Bucket: aws.String("insta-clone-s3-bucket"),
-		Key:    aws.String(now.Format("2006-01-02") + file.Filename),
-		Body:   bytes.NewReader(fileBytes),
+		Bucket:      aws.String("insta-clone-s3-bucket"),
+		Key:         aws.String(now.Format("2006-01-02") + file.Filename),
+		Body:        bytes.NewReader(fileBytes),
 		ContentType: aws.String(utils.GetContentType(file.Filename)),
 	}
 	_, err = client.PutObject(ctx, s3File)
@@ -193,6 +194,8 @@ func UpdateAvatar(c *fiber.Ctx) error {
 		UpdateOneID(int(body.Id)).
 		SetAvatar(now.Format("2006-01-02") + file.Filename).
 		Save(ctx)
+
+	_ = utils.DbConn.Comment.Update().Where(comment.AuthorEQ(int(body.Id))).SetAvatar(now.Format("2006-01-02") + file.Filename).Exec(ctx)
 
 	return c.JSON(fiber.Map{
 		"success": true,

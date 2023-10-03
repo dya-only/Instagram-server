@@ -53,6 +53,18 @@ func (cu *CommentUpdate) AddPostid(i int) *CommentUpdate {
 	return cu
 }
 
+// SetUsername sets the "username" field.
+func (cu *CommentUpdate) SetUsername(s string) *CommentUpdate {
+	cu.mutation.SetUsername(s)
+	return cu
+}
+
+// SetAvatar sets the "avatar" field.
+func (cu *CommentUpdate) SetAvatar(s string) *CommentUpdate {
+	cu.mutation.SetAvatar(s)
+	return cu
+}
+
 // SetContent sets the "content" field.
 func (cu *CommentUpdate) SetContent(s string) *CommentUpdate {
 	cu.mutation.SetContent(s)
@@ -125,6 +137,12 @@ func (cu *CommentUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	if value, ok := cu.mutation.AddedPostid(); ok {
 		_spec.AddField(comment.FieldPostid, field.TypeInt, value)
 	}
+	if value, ok := cu.mutation.Username(); ok {
+		_spec.SetField(comment.FieldUsername, field.TypeString, value)
+	}
+	if value, ok := cu.mutation.Avatar(); ok {
+		_spec.SetField(comment.FieldAvatar, field.TypeString, value)
+	}
 	if value, ok := cu.mutation.Content(); ok {
 		_spec.SetField(comment.FieldContent, field.TypeString, value)
 	}
@@ -177,6 +195,18 @@ func (cuo *CommentUpdateOne) SetPostid(i int) *CommentUpdateOne {
 // AddPostid adds i to the "postid" field.
 func (cuo *CommentUpdateOne) AddPostid(i int) *CommentUpdateOne {
 	cuo.mutation.AddPostid(i)
+	return cuo
+}
+
+// SetUsername sets the "username" field.
+func (cuo *CommentUpdateOne) SetUsername(s string) *CommentUpdateOne {
+	cuo.mutation.SetUsername(s)
+	return cuo
+}
+
+// SetAvatar sets the "avatar" field.
+func (cuo *CommentUpdateOne) SetAvatar(s string) *CommentUpdateOne {
+	cuo.mutation.SetAvatar(s)
 	return cuo
 }
 
@@ -281,6 +311,12 @@ func (cuo *CommentUpdateOne) sqlSave(ctx context.Context) (_node *Comment, err e
 	}
 	if value, ok := cuo.mutation.AddedPostid(); ok {
 		_spec.AddField(comment.FieldPostid, field.TypeInt, value)
+	}
+	if value, ok := cuo.mutation.Username(); ok {
+		_spec.SetField(comment.FieldUsername, field.TypeString, value)
+	}
+	if value, ok := cuo.mutation.Avatar(); ok {
+		_spec.SetField(comment.FieldAvatar, field.TypeString, value)
 	}
 	if value, ok := cuo.mutation.Content(); ok {
 		_spec.SetField(comment.FieldContent, field.TypeString, value)

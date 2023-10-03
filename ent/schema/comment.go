@@ -15,6 +15,8 @@ func (Comment) Fields() []ent.Field {
 	return []ent.Field{
 		field.Int("author"),
 		field.Int("postid"),
+		field.String("username"),
+		field.String("avatar"),
 		field.String("content"),
 		field.Int("likes"),
 	}

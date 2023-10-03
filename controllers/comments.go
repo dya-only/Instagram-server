@@ -18,10 +18,20 @@ func CreateComment(c *fiber.Ctx) error {
 		})
 	}
 
+	user, err := utils.DbConn.User.Get(ctx, body.Author)
+	if err != nil {
+		return c.JSON(fiber.Map{
+			"success": false,
+			"error": err,
+		})
+	}
+
 	post, err := utils.DbConn.Comment.
 		Create().
 		SetAuthor(body.Author).
 		SetPostid(body.PostId).
+		SetUsername(user.Username).
+		SetAvatar(user.Avatar).
 		SetContent(body.Content).
 		SetLikes(0).
 		Save(ctx)

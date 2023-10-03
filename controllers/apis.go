@@ -76,6 +76,10 @@ func Posts(app *fiber.App) {
 	api.Delete("/post/like/:id/:userid", middlewares.JwtGuard, func(c *fiber.Ctx) error {
 		return RemoveLike(c)
 	})
+
+	api.Get("/post/contain/:id/:postid", middlewares.JwtGuard, func(c *fiber.Ctx) error {
+		return GetContain(c)
+	})
 }
 
 func Comments(app *fiber.App) {

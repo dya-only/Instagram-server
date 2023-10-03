@@ -31,6 +31,18 @@ func (cc *CommentCreate) SetPostid(i int) *CommentCreate {
 	return cc
 }
 
+// SetUsername sets the "username" field.
+func (cc *CommentCreate) SetUsername(s string) *CommentCreate {
+	cc.mutation.SetUsername(s)
+	return cc
+}
+
+// SetAvatar sets the "avatar" field.
+func (cc *CommentCreate) SetAvatar(s string) *CommentCreate {
+	cc.mutation.SetAvatar(s)
+	return cc
+}
+
 // SetContent sets the "content" field.
 func (cc *CommentCreate) SetContent(s string) *CommentCreate {
 	cc.mutation.SetContent(s)
@@ -83,6 +95,12 @@ func (cc *CommentCreate) check() error {
 	if _, ok := cc.mutation.Postid(); !ok {
 		return &ValidationError{Name: "postid", err: errors.New(`ent: missing required field "Comment.postid"`)}
 	}
+	if _, ok := cc.mutation.Username(); !ok {
+		return &ValidationError{Name: "username", err: errors.New(`ent: missing required field "Comment.username"`)}
+	}
+	if _, ok := cc.mutation.Avatar(); !ok {
+		return &ValidationError{Name: "avatar", err: errors.New(`ent: missing required field "Comment.avatar"`)}
+	}
 	if _, ok := cc.mutation.Content(); !ok {
 		return &ValidationError{Name: "content", err: errors.New(`ent: missing required field "Comment.content"`)}
 	}
@@ -122,6 +140,14 @@ func (cc *CommentCreate) createSpec() (*Comment, *sqlgraph.CreateSpec) {
 	if value, ok := cc.mutation.Postid(); ok {
 		_spec.SetField(comment.FieldPostid, field.TypeInt, value)
 		_node.Postid = value
+	}
+	if value, ok := cc.mutation.Username(); ok {
+		_spec.SetField(comment.FieldUsername, field.TypeString, value)
+		_node.Username = value
+	}
+	if value, ok := cc.mutation.Avatar(); ok {
+		_spec.SetField(comment.FieldAvatar, field.TypeString, value)
+		_node.Avatar = value
 	}
 	if value, ok := cc.mutation.Content(); ok {
 		_spec.SetField(comment.FieldContent, field.TypeString, value)
