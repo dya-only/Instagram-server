@@ -8,12 +8,11 @@ import (
 	"go-template/utils"
 	"time"
 
-	"slices"
-
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/config"
 	"github.com/aws/aws-sdk-go-v2/service/s3"
 	"github.com/gofiber/fiber/v2"
+	"golang.org/x/exp/slices"
 )
 
 func CreatePost(c *fiber.Ctx) error {
@@ -232,16 +231,17 @@ func GetContain(c *fiber.Ctx) error {
 	id, _ := c.ParamsInt("id")
 	postid, _ := c.ParamsInt("postid")
 
-	user, _ := utils.DbConn.User.Get(ctx, id)
-	var likes []int
-
-	err := json.Unmarshal([]byte(user.Likes), &likes)
+	user, err := utils.DbConn.User.Get(ctx, id)
 	if err != nil {
 		return c.JSON(fiber.Map{
 			"success": false,
-			"error":   err,
+			"error":   "Not Found User",
 		})
 	}
+
+	var likes []int
+
+	_ = json.Unmarshal([]byte(user.Likes), &likes)
 
 	return c.JSON(fiber.Map{
 		"success": true,
