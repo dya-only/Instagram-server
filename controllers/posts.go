@@ -227,7 +227,7 @@ func RemoveLike(c *fiber.Ctx) error {
 	})
 }
 
-func GetContain(c *fiber.Ctx) error {
+func IsLiked(c *fiber.Ctx) error {
 	id, _ := c.ParamsInt("id")
 	postid, _ := c.ParamsInt("postid")
 
@@ -256,13 +256,13 @@ func AddBookmark(c *fiber.Ctx) error {
 	user, _ := utils.DbConn.User.Get(ctx, userid)
 	var bookmarks []int
 	err := json.Unmarshal([]byte(user.Bookmarks), &bookmarks)
-
 	if err != nil {
 		return c.JSON(fiber.Map{
 			"success": false,
 			"error":   err,
 		})
 	}
+
 	bookmarks = append(bookmarks, id)
 	bookmarksArr, _ := json.Marshal(bookmarks)
 	user.
@@ -273,5 +273,54 @@ func AddBookmark(c *fiber.Ctx) error {
 	return c.JSON(fiber.Map{
 		"success": true,
 		"body":    user,
+	})
+}
+
+func RemoveBookmark(c *fiber.Ctx) error {
+	id, _ := c.ParamsInt("id")
+	userid, _ := c.ParamsInt("userid")
+
+	user, _ := utils.DbConn.User.Get(ctx, userid)
+	var bookmarks []int
+	err := json.Unmarshal([]byte(user.Bookmarks), &bookmarks)
+	if err != nil {
+		return c.JSON(fiber.Map{
+			"success": false,
+			"error":   err,
+		})
+	}
+
+	bookmarks = append(bookmarks, id)
+	bookmarksArr, _ := json.Marshal(bookmarks)
+	user.
+		Update().
+		SetBookmarks(string(bookmarksArr)).
+		Save(ctx)
+
+	return c.JSON(fiber.Map{
+		"success": true,
+		"body":    user,
+	})
+}
+
+func IsBookmarked(c *fiber.Ctx) error {
+	id, _ := c.ParamsInt("id")
+	postid, _ := c.ParamsInt("postid")
+
+	user, err := utils.DbConn.User.Get(ctx, id)
+	if err != nil {
+		return c.JSON(fiber.Map{
+			"success": false,
+			"error":   "Not Found User",
+		})
+	}
+
+	var bookmarks []int
+
+	_ = json.Unmarshal([]byte(user.Bookmarks), &bookmarks)
+
+	return c.JSON(fiber.Map{
+		"success": true,
+		"body":    slices.Contains(bookmarks, postid),
 	})
 }

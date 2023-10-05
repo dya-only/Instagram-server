@@ -77,8 +77,20 @@ func Posts(app *fiber.App) {
 		return RemoveLike(c)
 	})
 
-	api.Get("/post/contain/:id/:postid", middlewares.JwtGuard, func(c *fiber.Ctx) error {
-		return GetContain(c)
+	api.Get("/post/liked/:id/:postid", middlewares.JwtGuard, func(c *fiber.Ctx) error {
+		return IsLiked(c)
+	})
+
+	api.Patch("/post/bookmark/:id/:userid", middlewares.JwtGuard, func(c *fiber.Ctx) error {
+		return AddBookmark(c)
+	})
+
+	api.Delete("/post/bookmark/:id/:userid", middlewares.JwtGuard, func(c *fiber.Ctx) error {
+		return RemoveBookmark(c)
+	})
+
+	api.Get("/post/bookmarked/:id/:postid", middlewares.JwtGuard, func(c *fiber.Ctx) error {
+		return IsBookmarked(c)
 	})
 }
 
