@@ -290,8 +290,13 @@ func RemoveBookmark(c *fiber.Ctx) error {
 		})
 	}
 
-	bookmarks = append(bookmarks, id)
-	bookmarksArr, _ := json.Marshal(bookmarks)
+	var _bookmarks []int
+	for _, el := range bookmarks {
+		if el != id {
+			_bookmarks = append(_bookmarks, el)
+		}
+	}
+	bookmarksArr, _ := json.Marshal(_bookmarks)
 	user.
 		Update().
 		SetBookmarks(string(bookmarksArr)).
