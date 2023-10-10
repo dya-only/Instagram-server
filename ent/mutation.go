@@ -1405,6 +1405,7 @@ type UserMutation struct {
 	name          *string
 	username      *string
 	password      *string
+	info          *string
 	bookmarks     *string
 	likes         *string
 	follower      *string
@@ -1695,6 +1696,42 @@ func (m *UserMutation) ResetPassword() {
 	m.password = nil
 }
 
+// SetInfo sets the "info" field.
+func (m *UserMutation) SetInfo(s string) {
+	m.info = &s
+}
+
+// Info returns the value of the "info" field in the mutation.
+func (m *UserMutation) Info() (r string, exists bool) {
+	v := m.info
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldInfo returns the old "info" field's value of the User entity.
+// If the User object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *UserMutation) OldInfo(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldInfo is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldInfo requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldInfo: %w", err)
+	}
+	return oldValue.Info, nil
+}
+
+// ResetInfo resets all changes to the "info" field.
+func (m *UserMutation) ResetInfo() {
+	m.info = nil
+}
+
 // SetBookmarks sets the "bookmarks" field.
 func (m *UserMutation) SetBookmarks(s string) {
 	m.bookmarks = &s
@@ -1945,7 +1982,7 @@ func (m *UserMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *UserMutation) Fields() []string {
-	fields := make([]string, 0, 11)
+	fields := make([]string, 0, 12)
 	if m.avatar != nil {
 		fields = append(fields, user.FieldAvatar)
 	}
@@ -1960,6 +1997,9 @@ func (m *UserMutation) Fields() []string {
 	}
 	if m.password != nil {
 		fields = append(fields, user.FieldPassword)
+	}
+	if m.info != nil {
+		fields = append(fields, user.FieldInfo)
 	}
 	if m.bookmarks != nil {
 		fields = append(fields, user.FieldBookmarks)
@@ -1997,6 +2037,8 @@ func (m *UserMutation) Field(name string) (ent.Value, bool) {
 		return m.Username()
 	case user.FieldPassword:
 		return m.Password()
+	case user.FieldInfo:
+		return m.Info()
 	case user.FieldBookmarks:
 		return m.Bookmarks()
 	case user.FieldLikes:
@@ -2028,6 +2070,8 @@ func (m *UserMutation) OldField(ctx context.Context, name string) (ent.Value, er
 		return m.OldUsername(ctx)
 	case user.FieldPassword:
 		return m.OldPassword(ctx)
+	case user.FieldInfo:
+		return m.OldInfo(ctx)
 	case user.FieldBookmarks:
 		return m.OldBookmarks(ctx)
 	case user.FieldLikes:
@@ -2083,6 +2127,13 @@ func (m *UserMutation) SetField(name string, value ent.Value) error {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetPassword(v)
+		return nil
+	case user.FieldInfo:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetInfo(v)
 		return nil
 	case user.FieldBookmarks:
 		v, ok := value.(string)
@@ -2189,6 +2240,9 @@ func (m *UserMutation) ResetField(name string) error {
 		return nil
 	case user.FieldPassword:
 		m.ResetPassword()
+		return nil
+	case user.FieldInfo:
+		m.ResetInfo()
 		return nil
 	case user.FieldBookmarks:
 		m.ResetBookmarks()

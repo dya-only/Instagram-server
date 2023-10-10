@@ -51,6 +51,8 @@ func ValidColumn(column string) bool {
 }
 
 var (
+	// DefaultLikes holds the default value on creation for the "likes" field.
+	DefaultLikes int
 	// DefaultCreateAt holds the default value on creation for the "create_at" field.
 	DefaultCreateAt func() time.Time
 	// UpdateDefaultUpdateAt holds the default value on update for the "update_at" field.

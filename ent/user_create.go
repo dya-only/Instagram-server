@@ -50,6 +50,12 @@ func (uc *UserCreate) SetPassword(s string) *UserCreate {
 	return uc
 }
 
+// SetInfo sets the "info" field.
+func (uc *UserCreate) SetInfo(s string) *UserCreate {
+	uc.mutation.SetInfo(s)
+	return uc
+}
+
 // SetBookmarks sets the "bookmarks" field.
 func (uc *UserCreate) SetBookmarks(s string) *UserCreate {
 	uc.mutation.SetBookmarks(s)
@@ -152,6 +158,9 @@ func (uc *UserCreate) check() error {
 	if _, ok := uc.mutation.Password(); !ok {
 		return &ValidationError{Name: "password", err: errors.New(`ent: missing required field "User.password"`)}
 	}
+	if _, ok := uc.mutation.Info(); !ok {
+		return &ValidationError{Name: "info", err: errors.New(`ent: missing required field "User.info"`)}
+	}
 	if _, ok := uc.mutation.Bookmarks(); !ok {
 		return &ValidationError{Name: "bookmarks", err: errors.New(`ent: missing required field "User.bookmarks"`)}
 	}
@@ -215,6 +224,10 @@ func (uc *UserCreate) createSpec() (*User, *sqlgraph.CreateSpec) {
 	if value, ok := uc.mutation.Password(); ok {
 		_spec.SetField(user.FieldPassword, field.TypeString, value)
 		_node.Password = value
+	}
+	if value, ok := uc.mutation.Info(); ok {
+		_spec.SetField(user.FieldInfo, field.TypeString, value)
+		_node.Info = value
 	}
 	if value, ok := uc.mutation.Bookmarks(); ok {
 		_spec.SetField(user.FieldBookmarks, field.TypeString, value)

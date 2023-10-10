@@ -15,6 +15,10 @@ import (
 func init() {
 	postFields := schema.Post{}.Fields()
 	_ = postFields
+	// postDescLikes is the schema descriptor for likes field.
+	postDescLikes := postFields[3].Descriptor()
+	// post.DefaultLikes holds the default value on creation for the likes field.
+	post.DefaultLikes = postDescLikes.Default.(int)
 	// postDescCreateAt is the schema descriptor for create_at field.
 	postDescCreateAt := postFields[4].Descriptor()
 	// post.DefaultCreateAt holds the default value on creation for the create_at field.
@@ -26,11 +30,11 @@ func init() {
 	userFields := schema.User{}.Fields()
 	_ = userFields
 	// userDescCreateAt is the schema descriptor for create_at field.
-	userDescCreateAt := userFields[9].Descriptor()
+	userDescCreateAt := userFields[10].Descriptor()
 	// user.DefaultCreateAt holds the default value on creation for the create_at field.
 	user.DefaultCreateAt = userDescCreateAt.Default.(func() time.Time)
 	// userDescUpdateAt is the schema descriptor for update_at field.
-	userDescUpdateAt := userFields[10].Descriptor()
+	userDescUpdateAt := userFields[11].Descriptor()
 	// user.UpdateDefaultUpdateAt holds the default value on update for the update_at field.
 	user.UpdateDefaultUpdateAt = userDescUpdateAt.UpdateDefault.(func() time.Time)
 }

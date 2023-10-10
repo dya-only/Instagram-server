@@ -20,6 +20,7 @@ func (User) Fields() []ent.Field {
 		field.String("name"),
 		field.String("username").Unique(),
 		field.String("password"),
+		field.String("info"),
 		field.String("bookmarks"),
 		field.String("likes"),
 		field.String("follower"),

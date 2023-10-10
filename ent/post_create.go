@@ -44,6 +44,14 @@ func (pc *PostCreate) SetLikes(i int) *PostCreate {
 	return pc
 }
 
+// SetNillableLikes sets the "likes" field if the given value is not nil.
+func (pc *PostCreate) SetNillableLikes(i *int) *PostCreate {
+	if i != nil {
+		pc.SetLikes(*i)
+	}
+	return pc
+}
+
 // SetCreateAt sets the "create_at" field.
 func (pc *PostCreate) SetCreateAt(t time.Time) *PostCreate {
 	pc.mutation.SetCreateAt(t)
@@ -99,6 +107,10 @@ func (pc *PostCreate) ExecX(ctx context.Context) {
 
 // defaults sets the default values of the builder before save.
 func (pc *PostCreate) defaults() {
+	if _, ok := pc.mutation.Likes(); !ok {
+		v := post.DefaultLikes
+		pc.mutation.SetLikes(v)
+	}
 	if _, ok := pc.mutation.CreateAt(); !ok {
 		v := post.DefaultCreateAt()
 		pc.mutation.SetCreateAt(v)

@@ -30,7 +30,7 @@ var (
 		{Name: "img", Type: field.TypeString},
 		{Name: "content", Type: field.TypeString},
 		{Name: "author", Type: field.TypeInt},
-		{Name: "likes", Type: field.TypeInt},
+		{Name: "likes", Type: field.TypeInt, Default: 0},
 		{Name: "create_at", Type: field.TypeTime},
 		{Name: "update_at", Type: field.TypeTime},
 	}
@@ -48,6 +48,7 @@ var (
 		{Name: "name", Type: field.TypeString},
 		{Name: "username", Type: field.TypeString, Unique: true},
 		{Name: "password", Type: field.TypeString},
+		{Name: "info", Type: field.TypeString},
 		{Name: "bookmarks", Type: field.TypeString},
 		{Name: "likes", Type: field.TypeString},
 		{Name: "follower", Type: field.TypeString},

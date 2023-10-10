@@ -41,6 +41,7 @@ func CreateUser(c *fiber.Ctx) error {
 		SetUsername(body.UserName).
 		SetName(body.Name).
 		SetPassword(body.Password).
+		SetInfo("").
 		SetBookmarks("[]").
 		SetLikes("[]").
 		SetFollower("[]").

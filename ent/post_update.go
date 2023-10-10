@@ -60,6 +60,14 @@ func (pu *PostUpdate) SetLikes(i int) *PostUpdate {
 	return pu
 }
 
+// SetNillableLikes sets the "likes" field if the given value is not nil.
+func (pu *PostUpdate) SetNillableLikes(i *int) *PostUpdate {
+	if i != nil {
+		pu.SetLikes(*i)
+	}
+	return pu
+}
+
 // AddLikes adds i to the "likes" field.
 func (pu *PostUpdate) AddLikes(i int) *PostUpdate {
 	pu.mutation.AddLikes(i)
@@ -209,6 +217,14 @@ func (puo *PostUpdateOne) AddAuthor(i int) *PostUpdateOne {
 func (puo *PostUpdateOne) SetLikes(i int) *PostUpdateOne {
 	puo.mutation.ResetLikes()
 	puo.mutation.SetLikes(i)
+	return puo
+}
+
+// SetNillableLikes sets the "likes" field if the given value is not nil.
+func (puo *PostUpdateOne) SetNillableLikes(i *int) *PostUpdateOne {
+	if i != nil {
+		puo.SetLikes(*i)
+	}
 	return puo
 }
 

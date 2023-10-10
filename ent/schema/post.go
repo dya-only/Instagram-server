@@ -18,7 +18,7 @@ func (Post) Fields() []ent.Field {
 		field.String("img"),
 		field.String("content"),
 		field.Int("author"),
-		field.Int("likes"),
+		field.Int("likes").Default(0),
 		field.Time("create_at").Default(time.Now),
 		field.Time("update_at").UpdateDefault(time.Now),
 	}

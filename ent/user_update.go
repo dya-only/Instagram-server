@@ -58,6 +58,12 @@ func (uu *UserUpdate) SetPassword(s string) *UserUpdate {
 	return uu
 }
 
+// SetInfo sets the "info" field.
+func (uu *UserUpdate) SetInfo(s string) *UserUpdate {
+	uu.mutation.SetInfo(s)
+	return uu
+}
+
 // SetBookmarks sets the "bookmarks" field.
 func (uu *UserUpdate) SetBookmarks(s string) *UserUpdate {
 	uu.mutation.SetBookmarks(s)
@@ -167,6 +173,9 @@ func (uu *UserUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	if value, ok := uu.mutation.Password(); ok {
 		_spec.SetField(user.FieldPassword, field.TypeString, value)
 	}
+	if value, ok := uu.mutation.Info(); ok {
+		_spec.SetField(user.FieldInfo, field.TypeString, value)
+	}
 	if value, ok := uu.mutation.Bookmarks(); ok {
 		_spec.SetField(user.FieldBookmarks, field.TypeString, value)
 	}
@@ -232,6 +241,12 @@ func (uuo *UserUpdateOne) SetUsername(s string) *UserUpdateOne {
 // SetPassword sets the "password" field.
 func (uuo *UserUpdateOne) SetPassword(s string) *UserUpdateOne {
 	uuo.mutation.SetPassword(s)
+	return uuo
+}
+
+// SetInfo sets the "info" field.
+func (uuo *UserUpdateOne) SetInfo(s string) *UserUpdateOne {
+	uuo.mutation.SetInfo(s)
 	return uuo
 }
 
@@ -373,6 +388,9 @@ func (uuo *UserUpdateOne) sqlSave(ctx context.Context) (_node *User, err error) 
 	}
 	if value, ok := uuo.mutation.Password(); ok {
 		_spec.SetField(user.FieldPassword, field.TypeString, value)
+	}
+	if value, ok := uuo.mutation.Info(); ok {
+		_spec.SetField(user.FieldInfo, field.TypeString, value)
 	}
 	if value, ok := uuo.mutation.Bookmarks(); ok {
 		_spec.SetField(user.FieldBookmarks, field.TypeString, value)

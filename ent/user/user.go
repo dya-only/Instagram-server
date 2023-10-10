@@ -23,6 +23,8 @@ const (
 	FieldUsername = "username"
 	// FieldPassword holds the string denoting the password field in the database.
 	FieldPassword = "password"
+	// FieldInfo holds the string denoting the info field in the database.
+	FieldInfo = "info"
 	// FieldBookmarks holds the string denoting the bookmarks field in the database.
 	FieldBookmarks = "bookmarks"
 	// FieldLikes holds the string denoting the likes field in the database.
@@ -47,6 +49,7 @@ var Columns = []string{
 	FieldName,
 	FieldUsername,
 	FieldPassword,
+	FieldInfo,
 	FieldBookmarks,
 	FieldLikes,
 	FieldFollower,
@@ -103,6 +106,11 @@ func ByUsername(opts ...sql.OrderTermOption) OrderOption {
 // ByPassword orders the results by the password field.
 func ByPassword(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldPassword, opts...).ToFunc()
+}
+
+// ByInfo orders the results by the info field.
+func ByInfo(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldInfo, opts...).ToFunc()
 }
 
 // ByBookmarks orders the results by the bookmarks field.

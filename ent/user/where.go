@@ -79,6 +79,11 @@ func Password(v string) predicate.User {
 	return predicate.User(sql.FieldEQ(FieldPassword, v))
 }
 
+// Info applies equality check predicate on the "info" field. It's identical to InfoEQ.
+func Info(v string) predicate.User {
+	return predicate.User(sql.FieldEQ(FieldInfo, v))
+}
+
 // Bookmarks applies equality check predicate on the "bookmarks" field. It's identical to BookmarksEQ.
 func Bookmarks(v string) predicate.User {
 	return predicate.User(sql.FieldEQ(FieldBookmarks, v))
@@ -432,6 +437,71 @@ func PasswordEqualFold(v string) predicate.User {
 // PasswordContainsFold applies the ContainsFold predicate on the "password" field.
 func PasswordContainsFold(v string) predicate.User {
 	return predicate.User(sql.FieldContainsFold(FieldPassword, v))
+}
+
+// InfoEQ applies the EQ predicate on the "info" field.
+func InfoEQ(v string) predicate.User {
+	return predicate.User(sql.FieldEQ(FieldInfo, v))
+}
+
+// InfoNEQ applies the NEQ predicate on the "info" field.
+func InfoNEQ(v string) predicate.User {
+	return predicate.User(sql.FieldNEQ(FieldInfo, v))
+}
+
+// InfoIn applies the In predicate on the "info" field.
+func InfoIn(vs ...string) predicate.User {
+	return predicate.User(sql.FieldIn(FieldInfo, vs...))
+}
+
+// InfoNotIn applies the NotIn predicate on the "info" field.
+func InfoNotIn(vs ...string) predicate.User {
+	return predicate.User(sql.FieldNotIn(FieldInfo, vs...))
+}
+
+// InfoGT applies the GT predicate on the "info" field.
+func InfoGT(v string) predicate.User {
+	return predicate.User(sql.FieldGT(FieldInfo, v))
+}
+
+// InfoGTE applies the GTE predicate on the "info" field.
+func InfoGTE(v string) predicate.User {
+	return predicate.User(sql.FieldGTE(FieldInfo, v))
+}
+
+// InfoLT applies the LT predicate on the "info" field.
+func InfoLT(v string) predicate.User {
+	return predicate.User(sql.FieldLT(FieldInfo, v))
+}
+
+// InfoLTE applies the LTE predicate on the "info" field.
+func InfoLTE(v string) predicate.User {
+	return predicate.User(sql.FieldLTE(FieldInfo, v))
+}
+
+// InfoContains applies the Contains predicate on the "info" field.
+func InfoContains(v string) predicate.User {
+	return predicate.User(sql.FieldContains(FieldInfo, v))
+}
+
+// InfoHasPrefix applies the HasPrefix predicate on the "info" field.
+func InfoHasPrefix(v string) predicate.User {
+	return predicate.User(sql.FieldHasPrefix(FieldInfo, v))
+}
+
+// InfoHasSuffix applies the HasSuffix predicate on the "info" field.
+func InfoHasSuffix(v string) predicate.User {
+	return predicate.User(sql.FieldHasSuffix(FieldInfo, v))
+}
+
+// InfoEqualFold applies the EqualFold predicate on the "info" field.
+func InfoEqualFold(v string) predicate.User {
+	return predicate.User(sql.FieldEqualFold(FieldInfo, v))
+}
+
+// InfoContainsFold applies the ContainsFold predicate on the "info" field.
+func InfoContainsFold(v string) predicate.User {
+	return predicate.User(sql.FieldContainsFold(FieldInfo, v))
 }
 
 // BookmarksEQ applies the EQ predicate on the "bookmarks" field.
